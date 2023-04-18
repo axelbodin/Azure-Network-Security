@@ -16,15 +16,15 @@ Function Get-ResourceProvider {
         $resourceName
     )
     switch -regex ($resourceName) {
-        'azure-api.net$' { $resourceProvider = 'azure-api.net'; break }
-        'azurecontainer.io$' { $resourceProvider = 'azurecontainer.io'; break }
-        'azurefd.net$' { $resourceProvider = 'azurefd.net'; break }
-        'azureedge.net$' { $resourceProvider = 'azureedge.net'; break }
-        'azurewebsites.net$' { $resourceProvider = 'azurewebsites.net'; break }
-        'blob.core.windows.net$' { $resourceProvider = 'blob.core.windows.net'; break }
-        'cloudapp.azure.com$' { $resourceProvider = 'cloudapp.azure.com'; break }
-        'cloudapp.net$' { $resourceProvider = 'cloudapp.net'; break }
-        'trafficmanager.net$' { $resourceProvider = 'trafficmanager.net'; break }
+        'azure-api.net(?:\.)?$' { $resourceProvider = 'azure-api.net'; break }
+        'azurecontainer.io(?:\.)?$' { $resourceProvider = 'azurecontainer.io'; break }
+        'azurefd.net(?:\.)?$' { $resourceProvider = 'azurefd.net'; break }
+        'azureedge.net(?:\.)?$' { $resourceProvider = 'azureedge.net'; break }
+        'azurewebsites.net(?:\.)?$' { $resourceProvider = 'azurewebsites.net'; break }
+        'blob.core.windows.net(?:\.)?$' { $resourceProvider = 'blob.core.windows.net'; break }
+        'cloudapp.azure.com(?:\.)?$' { $resourceProvider = 'cloudapp.azure.com'; break }
+        'cloudapp.net(?:\.)?$' { $resourceProvider = 'cloudapp.net'; break }
+        'trafficmanager.net(?:\.)?$' { $resourceProvider = 'trafficmanager.net'; break }
     }
     return $resourceProvider
 }
@@ -222,15 +222,15 @@ Function Get-DnsRecordsWorkFlow {
                     $resourceName
                 )
                 switch -regex ($resourceName) {
-                    'azure-api.net$' { $resourceProvider = 'azure-api.net'; break }
-                    'azurecontainer.io$' { $resourceProvider = 'azurecontainer.io'; break }
-                    'azurefd.net$' { $resourceProvider = 'azurefd.net'; break }
-                    'azureedge.net$' { $resourceProvider = 'azureedge.net'; break }
-                    'azurewebsites.net$' { $resourceProvider = 'azurewebsites.net'; break }
-                    'blob.core.windows.net$' { $resourceProvider = 'blob.core.windows.net'; break }
-                    'cloudapp.azure.com$' { $resourceProvider = 'cloudapp.azure.com'; break }
-                    'cloudapp.net$' { $resourceProvider = 'cloudapp.net'; break }
-                    'trafficmanager.net$' { $resourceProvider = 'trafficmanager.net'; break }
+                    'azure-api.net(?:\.)?$' { $resourceProvider = 'azure-api.net'; break }
+                    'azurecontainer.io(?:\.)?$' { $resourceProvider = 'azurecontainer.io'; break }
+                    'azurefd.net(?:\.)?$' { $resourceProvider = 'azurefd.net'; break }
+                    'azureedge.net(?:\.)?$' { $resourceProvider = 'azureedge.net'; break }
+                    'azurewebsites.net(?:\.)?$' { $resourceProvider = 'azurewebsites.net'; break }
+                    'blob.core.windows.net(?:\.)?$' { $resourceProvider = 'blob.core.windows.net'; break }
+                    'cloudapp.azure.com(?:\.)?$' { $resourceProvider = 'cloudapp.azure.com'; break }
+                    'cloudapp.net(?:\.)?$' { $resourceProvider = 'cloudapp.net'; break }
+                    'trafficmanager.net(?:\.)?$' { $resourceProvider = 'trafficmanager.net'; break }
                 }
                 return $resourceProvider
             }
@@ -416,15 +416,15 @@ Function Run-BySubscription {
                         $recordName
                     )
                     switch -regex ($recordName) {
-                        'azure-api.net$' { $resourceProvider = 'azure-api.net'; break }
-                        'azurecontainer.io$' { $resourceProvider = 'azurecontainer.io'; break }
-                        'azurefd.net$' { $resourceProvider = 'azurefd.net'; break }
-                        'azureedge.net$' { $resourceProvider = 'azureedge.net'; break }
-                        'azurewebsites.net$' { $resourceProvider = 'azurewebsites.net'; break }
-                        'blob.core.windows.net$' { $resourceProvider = 'blob.core.windows.net'; break }
-                        'cloudapp.azure.com$' { $resourceProvider = 'cloudapp.azure.com'; break }
-                        'cloudapp.net$' { $resourceProvider = 'cloudapp.net'; break }
-                        'trafficmanager.net$' { $resourceProvider = 'trafficmanager.net'; break }                    
+                        'azure-api.net(?:\.)?$' { $resourceProvider = 'azure-api.net'; break }
+                        'azurecontainer.io(?:\.)?$' { $resourceProvider = 'azurecontainer.io'; break }
+                        'azurefd.net(?:\.)?$' { $resourceProvider = 'azurefd.net'; break }
+                        'azureedge.net(?:\.)?$' { $resourceProvider = 'azureedge.net'; break }
+                        'azurewebsites.net(?:\.)?$' { $resourceProvider = 'azurewebsites.net'; break }
+                        'blob.core.windows.net(?:\.)?$' { $resourceProvider = 'blob.core.windows.net'; break }
+                        'cloudapp.azure.com(?:\.)?$' { $resourceProvider = 'cloudapp.azure.com'; break }
+                        'cloudapp.net(?:\.)?$' { $resourceProvider = 'cloudapp.net'; break }
+                        'trafficmanager.net(?:\.)?$' { $resourceProvider = 'trafficmanager.net'; break }                    
                     }
                     return $resourceProvider
                 }
@@ -819,6 +819,7 @@ Function Get-DanglingDnsRecords {
 
     $AZAccountConnectTime = Get-TimeToProcess $AZAccountConnectStart
 
+    #TODO: Update query
     $interestedResourcesQuery = "
     resources
     | where subscriptionId matches regex '(?i)$InputSubscriptionIdRegexFilterForAzureResourcesGraph'
@@ -876,6 +877,15 @@ Function Get-DanglingDnsRecords {
         dnsEndpoint endswith 'cloudapp.azure.com', 'cloudapp.azure.com',
         dnsEndpoint endswith 'cloudapp.net', 'cloudapp.net',
         dnsEndpoint endswith 'trafficmanager.net', 'trafficmanager.net',
+        dnsEndpoint endswith 'azure-api.net.', 'azure-api.net',
+        dnsEndpoint endswith 'azurecontainer.io.', 'azurecontainer.io',
+        dnsEndpoint endswith 'azureedge.net.', 'azureedge.net',
+        dnsEndpoint endswith 'azurefd.net.', 'azurefd.net',
+        dnsEndpoint endswith 'azurewebsites.net.', 'azurewebsites.net',
+        dnsEndpoint endswith 'blob.core.windows.net.', 'blob.core.windows.net', 
+        dnsEndpoint endswith 'cloudapp.azure.com.', 'cloudapp.azure.com',
+        dnsEndpoint endswith 'cloudapp.net.', 'cloudapp.net',
+        dnsEndpoint endswith 'trafficmanager.net.', 'trafficmanager.net',
         '' 
     )
     | project id, tenantId, subscriptionId, type, resourceGroup, name, dnsEndpoint, dnsEndpoints, properties, resourceProvider
